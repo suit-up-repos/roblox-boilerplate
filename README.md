@@ -8,6 +8,7 @@ UI is not necessarily included in this project.
 ## To-do
 * Physical shop example needs to be created
 * Physical teleporters to other Experiences
+* Round system and game state
 
 # Modules
 ## Profile+ReplicaService (modified)

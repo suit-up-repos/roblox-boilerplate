@@ -1,5 +1,5 @@
 {
-    "name": "DataModel",
+    "name": "Boilerplate Project",
     "globIgnorePaths": [
         "src/**/*.spec.lua",
         "Packages/**/*.spec.lua"
