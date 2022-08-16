@@ -3,12 +3,18 @@ This boilerplate should serve as a solid basis for starting a new project. It ha
 
 This README aims to introduce some patterns found in this boilerplate, as well as how to best take advantage of some of the modules found in it.
 
-UI is not necessarily included in this project.
+UI is not included in this template.
 
-## To-do
-* Physical shop example needs to be created
-* Physical teleporters to other Experiences
-* Round system and game state
+# Item Shop
+An Item Shop exists via `ShopService.lua`, and can be invoked on both the client and server using the PurchaseItem method.
+
+```
+-- client
+ShopService:PurchaseItem("TestItem", 10) -- // purchase 10 TestItem
+
+-- server
+ShopService:PurchaseItem(player, "TestItem", 10) -- // server call requires direct reference to the player object
+```
 
 # Modules
 ## Profile+ReplicaService (modified)
