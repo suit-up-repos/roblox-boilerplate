@@ -16,6 +16,7 @@ local AnimationPlayer = require(Shared.AnimationPlayer)
 local Packages = ReplicatedStorage.Packages
 local Knit = require(Packages.Knit)
 local Signal = require(Packages.Signal)
+local WaitFor = require(Packages.WaitFor)
 
 local CharacterController = Knit.CreateController { Name = "CharacterController" }
 
@@ -30,7 +31,7 @@ function CharacterController:KnitStart()
     LocalPlayer.CharacterAdded:Connect(function(character)
         local humanoid = character:WaitForChild("Humanoid", true)
         -- example: load animations using Promises
-        Promisified.WaitForChild(humanoid, "Animator"):andThen(function(animator) -- // Animator being available typically means character is loaded
+        WaitFor.Child(humanoid, "Animator"):andThen(function(animator) -- // Animator being available typically means character is loaded
             -- // do things after finding the Animator object like loading animations
         end):finally(function() -- // use Promises to ensure that this eventually happens
             self.CharacterAddedEvent:Fire(character) -- // fire when loading the character is complete

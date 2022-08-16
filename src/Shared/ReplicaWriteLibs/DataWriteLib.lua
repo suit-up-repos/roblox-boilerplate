@@ -37,13 +37,13 @@ local DataWriteLib = {
         if shopInfo then
             local clampedAmt = math.clamp(itemamt, 1, 100)
             local integerAmt = math.floor(clampedAmt) or 1
-            local itemid = shopInfo.Item
             local price = shopInfo.Price * integerAmt
 
             if replica.Data.Currency >= price then
                 replica:Write("IncrementCurrency", -price)
                 --// get item data to insert (if unique, more work required. generic, just insert item id w/ amount increment)
-                replica:Write("AddItemToInv", itemid, itemamt)
+                replica:Write("AddItemToInv", shopid, itemamt)
+                print("Added item to inventory:" .. shopid)
                 return true
             end
         end

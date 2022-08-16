@@ -3,7 +3,7 @@ local ShopData = {}
 local data = {
     ["TestItem"] = {
         _id = 1;
-
+        Price = 10;
         -- addtional info needed here
     }
 }

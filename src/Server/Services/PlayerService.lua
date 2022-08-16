@@ -16,7 +16,7 @@ local ReplicatedStorage = game:GetService("ReplicatedStorage")
 
 local Shared = ReplicatedStorage:WaitForChild("Shared")
 local buildRagdoll = require(Shared.Ragdoll.buildRagdoll)
-local ImpulseFling = require(Shared.ImpulseFling)
+
 
 local Packages = ReplicatedStorage.Packages
 local Knit = require(Packages.Knit)
@@ -30,6 +30,22 @@ local PlayerService = Knit.CreateService {
         CharacterLoaded = Knit.CreateSignal()
     };
 }
+
+-- Get the player's container to interact with it
+function PlayerService:GetContainer(player)
+    -- ensure player exists
+    if not player then
+        warn("Cannot get container of nonexistent player")
+        return
+    end
+
+    local container = self._players[player]
+    if container then
+        return container
+    else
+        warn("Could not get container for " .. tostring(player))
+    end
+end
 
 -- Useful if other things need to be done before/after a character is loaded
 function PlayerService:CustomLoadCharacter(player)

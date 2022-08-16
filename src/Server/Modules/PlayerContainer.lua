@@ -16,12 +16,10 @@ local ProfileService = require(Modules.ProfileService)
 
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
 local Shared = ReplicatedStorage:WaitForChild("Shared")
-local SenpaiTypes = require(Shared.SenpaiTypes)
 
 local Knit = require(ReplicatedStorage.Packages.Knit)
 local Maid = require(game.ReplicatedStorage.Packages.Maid)
 
-type playerdata = SenpaiTypes.playerdata
 
 local PlayerContainer = {}
 PlayerContainer.__index = PlayerContainer
@@ -31,8 +29,8 @@ PlayerContainer.Tag = "PlayerContainer"
 local DATA_VERSION = 1
 
 -- // Edit your player data here!
-local TEMPLATE_DATA: playerdata = {
-    Currency = 0;
+local TEMPLATE_DATA = {
+    Currency = 1000;
     Inventory = {
 
     };
@@ -55,14 +53,6 @@ export type PlayerContainer = {
 }
 
 function PlayerContainer.new(player: Player?): PlayerContainer
-    -- lastHit: Keeps track of os.time of last "hit", and what kind of hit it was
-    -- "none": player has not attacked yet
-    -- "basic": player used a basic attack
-    -- "[skill id]_[hit number]": player used a special attack, possibly with multiple hits
-
-    -- table contains list of mobs that were hit by this attack.
-        -- this is to account for attacks that hit multiple targets w/out disabling
-        -- damage for attacking "too quickly"
     local self = setmetatable({
         _instance = player,
         _maid = Maid.new(),
