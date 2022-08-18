@@ -30,7 +30,7 @@ local DATA_VERSION = 1
 
 -- // Edit your player data here!
 local TEMPLATE_DATA = {
-    Currency = 1000;
+    Currency = 10;
     Inventory = {
 
     };

@@ -27,7 +27,7 @@ local DataWriteLib = {
         if existing then
             replica:IncrementValue("Inventory", itemid, amt)
         else
-            existing:SetValue("Inventory", itemid, amt) -- // create new entry
+            replica:SetValue("Inventory", itemid, amt) -- // create new entry
         end
     end,
 
@@ -43,8 +43,11 @@ local DataWriteLib = {
                 replica:Write("IncrementCurrency", -price)
                 --// get item data to insert (if unique, more work required. generic, just insert item id w/ amount increment)
                 replica:Write("AddItemToInv", shopid, itemamt)
-                print("Added item to inventory:" .. shopid)
+                print("Added item to inventory: " .. shopid)
+                print(replica.Data.Currency)
                 return true
+            else
+                warn("Not enough currency, missing " .. tostring(price - replica.Data.Currency))
             end
         end
         return false
