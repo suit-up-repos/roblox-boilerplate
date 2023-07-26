@@ -25,9 +25,17 @@ local DataWriteLib = {
     AddItemToInv = function(replica, itemid, amt)
         local existing = replica.Data.Inventory[itemid]
         if existing then
-            replica:IncrementValue("Inventory", itemid, amt)
+            replica:IncrementValue({"Inventory", itemid}, amt)
         else
             replica:SetValue("Inventory", itemid, amt) -- // create new entry
+        end
+    end,
+
+    -- this expects a positive number for amount
+    RemoveItemFromInv = function(replica, itemid, amt)
+        local existing = replica.Data.Inventory[itemid]
+        if existing then
+            replica:IncrementValue({"Inventory", itemid}, -amt)
         end
     end,
 

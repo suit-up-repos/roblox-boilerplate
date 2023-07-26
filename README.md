@@ -1,5 +1,5 @@
 # Suit Up Boilerplate
-This boilerplate should serve as a solid basis for starting a new project. It has the latest version of Knit established, as well as core Controllers and Services written by *Aaron Jay (seyai)* that handle player save data, character spawning, and basic client-server communication.
+This boilerplate should serve as a solid basis for starting a new project. It has the latest version of Knit established, as well as core Controllers and Services written by *Aaron Jay (seyai_one)* that handle player save data, character spawning, and basic client-server communication.
 
 This README aims to introduce some patterns found in this boilerplate, as well as how to best take advantage of some of the modules found in it.
 
@@ -32,6 +32,20 @@ replica:Write("IncrementCurrency", 100) -- this adds 100 currency, and signals t
 -- using direct write operation
 replica:IncrementValue({"Currency"}, 100) -- the WriteLib is shorthand for this.
 ```
+## Help! My data isn't saving in Studio!
+This "issue" comes up a lot with teammates newly joining Suit Up Games, so I thought it'd be good to address here.
+
+This is intended by default. ProfileService will utilize a **Mock DataStore** that simulates all features of a DataStore without making direct calls to the Roblox service. This is useful for quickly testing features without running into any read/write limits imposed by Roblox, as well as if services go down. This is also helpful for testing different stages of gameplay (FTUE vs long time player), and separating your live data from testing.
+
+## Adding new keys
+If new keys are needed in a player's data, these can be added to the `TEMPLATE_DATA` variable under `src/Server/Modules/PlayerContainer.lua`. The game will automatically reconcile existing profiles with any new keys added to this.
+
+## Inventory
+The DataWriteLib handles inventory management in such a way that allows "known-stackable" objects. What do these terms mean?
+* Known: pre-defined item with set, immutable attributes (ex. consumables, quest key objects)
+* Stackable: we can have many of this type of object
+
+The ShopService and base inventory WriteLibs do not support *unique* objects that can change during gameplay, like pets in a pet simulator type of game. It is recommended to add a new key to the PlayerContainer's template data for a new dictionary to support these.
 
 ## Profile+ReplicaService (modified)
 [ProfileService](https://madstudioroblox.github.io/ProfileService/) and [ReplicaService](https://madstudioroblox.github.io/ReplicaService/) are modules created by Roblox developer veteran [loleris](https://twitter.com/LM_loleris) as a way to safely store player data and reflect that data as it changes across the client-server boundary with minimal network traffic, respectively.
