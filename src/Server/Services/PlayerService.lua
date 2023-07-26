@@ -57,8 +57,9 @@ function PlayerService.Client:DidLoadReplica(player: Player)
     local thisContainer = self.Server._players[player]
     if not player.Character then
         self.Server:CustomLoadCharacter(player, thisContainer.Profile.Data.Kit)
-        self.SendFirstTime:Fire(player)
     end
+
+    self.SendFirstTime:Fire(player)
     return true
 end
 
