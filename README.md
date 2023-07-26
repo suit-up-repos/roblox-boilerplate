@@ -15,7 +15,8 @@ To read player data, it is suggested to use the following:
 ```
 local container = PlayerService:GetContainer(player)
 local data = container.Profile.Data
--- perform read operations here
+local munny = data.Currency
+-- perform money operations here
 ```
 
 To write player data, it is suggested to write to the Replica such that ReplicaService can propagate the newly modified state to its respective clients. These changes can then be listened to on the client using `replica:ListenToWrite()` and other listener methods. (see ReplicaService docs for more)
