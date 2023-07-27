@@ -18,7 +18,7 @@ local ReplicatedStorage = game:GetService("ReplicatedStorage")
 local Shared = ReplicatedStorage:WaitForChild("Shared")
 
 local Knit = require(ReplicatedStorage.Packages.Knit)
-local Maid = require(game.ReplicatedStorage.Packages.Maid)
+local Janitor = require(game.ReplicatedStorage.Packages.Janitor)
 
 
 local PlayerContainer = {}
@@ -55,7 +55,7 @@ export type PlayerContainer = {
 function PlayerContainer.new(player: Player?): PlayerContainer
     local self = setmetatable({
         _instance = player,
-        _maid = Maid.new(),
+        _janitor = Janitor.new(),
         lastHit = {-1, "none", {}},
 
         Profile = nil,
@@ -88,7 +88,7 @@ function PlayerContainer.new(player: Player?): PlayerContainer
                 Replication = {[player] = true},
                 WriteLib = Shared.ReplicaWriteLibs.DataWriteLib
             })
-            self._maid:Add(function()
+            self._janitor:Add(function()
                 if self.Profile ~= nil then
                     self.Profile:Release()
                 end
@@ -157,7 +157,7 @@ function PlayerContainer:ContainsAtLeast(path, qty): boolean
 end
 
 function PlayerContainer:Destroy()
-    self._maid:Destroy()
+    self._janitor:Destroy()
 end
 
 return PlayerContainer

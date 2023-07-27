@@ -20,7 +20,7 @@ local Shared = ReplicatedStorage:WaitForChild("Shared")
 local Packages = ReplicatedStorage.Packages
 local Knit = require(Packages.Knit)
 local Signal = require(Packages.Signal)
-local Maid = require(Packages.Maid)
+local Janitor = require(Packages.Janitor)
 local Timer = require(Packages.Timer)
 local Promise = require(Packages.Promise)
 
