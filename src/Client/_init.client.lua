@@ -1,5 +1,4 @@
 local LocalPlayer = game.Players.LocalPlayer
-require(game.ReplicatedStorage.Shared.Ragdoll.RagdollHandler)
 -- set camera
 -- workspace.CurrentCamera.CameraType = Enum.CameraType.Scriptable
 

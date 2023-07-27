@@ -15,8 +15,6 @@ local PlayerContainer = require(Modules.PlayerContainer)
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
 
 local Shared = ReplicatedStorage:WaitForChild("Shared")
-local buildRagdoll = require(Shared.Ragdoll.buildRagdoll)
-
 
 local Packages = ReplicatedStorage.Packages
 local Knit = require(Packages.Knit)
@@ -95,7 +93,6 @@ function PlayerService:KnitStart()
             end)
 
             task.wait()
-            buildRagdoll(playerHumanoid)
 
             for _, v in ipairs(character:GetChildren()) do
                 if v:IsA("BasePart") then
