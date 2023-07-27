@@ -1,5 +1,6 @@
 {
-    "name": "Boilerplate Project",
+    "name": "Boilerplate",
+    "servePlaceIds": [12345],
     "globIgnorePaths": [
         "src/**/*.spec.lua",
         "Packages/**/*.spec.lua"

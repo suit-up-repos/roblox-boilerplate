@@ -93,7 +93,6 @@ function PlayerService:KnitStart()
             end)
 
             task.wait()
-
             for _, v in ipairs(character:GetChildren()) do
                 if v:IsA("BasePart") then
                     PhysicsService:SetPartCollisionGroup(v, "Players") -- // useful for disabling player-player collisions

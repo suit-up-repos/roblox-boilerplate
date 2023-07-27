@@ -5,6 +5,9 @@ This README aims to introduce some patterns found in this boilerplate, as well a
 
 UI is not included in this template.
 
+# Rojo default vs deploy
+`deploy.project.json` should have a `servePlaceIds` of the main dev staging/production place on Roblox. This is to prevent syncing of WIP code to these places by accident. Additionally, it is recommended to create `default.project.json` file that is a copy of `deploy`, but using your development place id(s) in `servePlaceIds` instead of the main ones. `default.project.json` is ignored by git as well since it is meant to be a local dev environment.
+
 # Installing Packages
 It is recommended to install Packages locally via Wally. Install tools via `aftman install`, then install the packages with `wally run`
 
