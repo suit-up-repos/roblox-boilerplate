@@ -82,3 +82,37 @@ Items that can be purchased with in-game currency can be added to `src/Shared/Sh
 
 ### WaitFor
 This RbxUtil module by sleitnick is useful Promise implementation of `WaitForChild`, and should be used when you are expecting to do something after an Instance is found.
+
+## BrainTracking
+
+Please track events that may affect player behavior. Google A/B Testing for some ideas. 
+
+Also track events that could give context to other events. For example, it would be good to know when the server starts a new round of game play and details about that round.
+
+### Configuration
+Update src/Server/Services/BrainTrackService/config.lua so that "campaign" is a short human-readable code describing the game. 
+
+Turn on track_on_local and debug when you add new tracking to ensure that it works.
+
+```
+-- client
+BrainTrackService:track(trackData) 
+BrainTrackService:track({'event' = 'open', 'choice' = 'box', 'subchoice' = 'birthdayPresent', 'scene' = 'chuckyCheese'}) 
+-- // record event when player opened a box containing a birthday present at chucky cheese. 
+
+-- server
+BrainTrackService:track(player, trackData) 
+BrainTrackService:track(nil, {'event' = 'beginRound', 'choice' = 'checkers'}) 
+-- // record event when server starts a round of checkers
+```
+
+trackData should always contain key "event"
+trackData may also contain keys 'choice','subchoice', 'scene', and 'context'
+
+'choice' is truncated to 99 chars, other options are 64 or shorter so put important information in beginning of string. For example "1234_cabin_in_woods" is better than "cabin_in_woods_1234"
+
+There is basic debouncing which prevents the same event with identical values from being sent multiple times per minute. Please avoid sending repetitive data -  Roblox limits the number of outgoing http calls per minute and we don't want to track junk data.
+
+There is a 15-30 minute delay between event being recorded and it showing up in reports. Contact James Funk (stinkoDad20x6) if you need access to reports, need a new report specific to your game, or need a way to see events quicker.
+ 
+You also want to put interesting information in the keepAlive section, replacing the text in "DevNeedsToUpdateWithGoodInfo".
