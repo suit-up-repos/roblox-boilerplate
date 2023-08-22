@@ -79,11 +79,6 @@
 	-- Dictionaries:
 		Replica:SetValue(path, value) -- !!! Avoid numeric tables with gaps
 		Replica:SetValues(path, values)  -- values = {key = value, ...} !!! Avoid numeric tables with gaps
-
-		## MODIFIED ADDITIONS ##
-		Replica:IncrementValue(path, value) -- increases by X amount
-		Replica:IncrementValues(path, value) -- increases multiple values by X amount
-
 		
 	-- (Numeric) Arrays:
 		Replica:ArrayInsert(path, value) --> new_index -- Performs table.insert(path, value)
@@ -384,7 +379,7 @@ local function DestroyReplicaAndDescendantsRecursive(replica, not_first_in_stack
 	-- Clear replica entry:
 	Replicas[id] = nil
 	-- Cleanup:
-	replica._maid:Clean()
+	replica._maid:Cleanup()
 	-- Remove _creation_data entry:
 	replica._creation_data[tostring(id)] = nil
 	-- Clear from children table of top parent replica:
@@ -431,6 +426,8 @@ function Replica:SetValue(path, value)
 		end
 	end
 end
+
+
 
 function Replica:IncrementValue(path, value)
 	local path_array = (type(path) == "string") and StringPathToArray(path) or path
@@ -597,6 +594,48 @@ function Replica:ArrayRemove(path, index) --> removed_value
 	return removed_value
 end
 
+function Replica:Contains(path, entry) -- replica_id, path_array, index
+	local path_array = (type(path) == "string") and StringPathToArray(path) or path
+	-- Getting path pointer and listener table:
+	if(path_array) then
+		local pointer = self.Data
+		for i = 1, #path_array do
+			pointer = pointer[path_array[i]]
+		end
+
+		if(pointer) then
+			for i, v in ipairs(pointer) do
+				if(v == entry) then
+					return true
+				end
+			end
+		end
+	end
+
+	return false
+end
+
+function Replica:ContainsKey(path, entry) -- replica_id, path_array, index
+	local path_array = (type(path) == "string") and StringPathToArray(path) or path
+	-- Getting path pointer and listener table:
+	if(path_array) then
+		local pointer = self.Data
+		for i = 1, #path_array do
+			pointer = pointer[path_array[i]]
+		end
+
+		if(pointer) then
+			for i, v in pairs(pointer) do
+				if(i == entry) then
+					return true
+				end
+			end
+		end
+	end
+
+	return false
+end
+
 -- Write library:
 function Replica:Write(function_name, ...) --> return_params...
 	if WriteFunctionFlag == true then -- Chained :Write()
@@ -678,6 +717,7 @@ function Replica:SetParent(new_parent)
 	if old_replication ~= new_replication then -- Top level ancestor changed:
 		local old_creation_data = old_parent._creation_data
 		local new_creation_data = new_parent._creation_data
+		self._creation_data = new_creation_data
 		-- Create temporary creation data:
 		local temporary_creation_data = {} -- [string_id] = creation_data_of_one
 		ParseReplicaBranch(self, function(transfered_replica)
