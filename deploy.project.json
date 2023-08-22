@@ -41,6 +41,12 @@
                 "$className": "StarterPlayerScripts",
                 "$path": "src/Client"
             }
+        },
+
+        "ReplicatedFirst": {
+            "$ignoreUnknownInstances": true,
+            "$className": "ReplicatedFirst",
+            "$path": "src/ReplicatedFirst"
         }
     }
 }
