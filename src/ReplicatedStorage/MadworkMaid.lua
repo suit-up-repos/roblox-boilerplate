@@ -13,7 +13,7 @@
 	
 		Maid:AddCleanupTask(task) --> cleanup_of_one [function] (...) -- Returned function can be called to cleanup the individual task
 		Maid:RemoveCleanupTask(task)
-		Maid:Clean(params...)
+		Maid:Cleanup(params...)
 		
 	Notice: "params..." argument is optional and can be used to pass arguments to cleanup functions
 	
@@ -121,12 +121,12 @@ function Maid:RemoveCleanupTask(task)
 	end
 end
 
-function Maid:CleanOfOne(task, ...)
+function Maid:CleanupOfOne(task, ...)
 	self:RemoveCleanupTask(task)
 	PerformCleanupTask(task, ...)
 end
 
-function Maid:Clean(...)
+function Maid:Cleanup(...)
 	for _, task in ipairs(self._cleanup_tasks) do
 		PerformCleanupTask(task, ...)
 	end
