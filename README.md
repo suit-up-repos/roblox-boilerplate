@@ -94,6 +94,8 @@ Update src/Server/Services/BrainTrackService/config.lua so that "campaign" is a 
 
 Turn on track_on_local and debug when you add new tracking to ensure that it works.
 
+Put ad/logo asset ids into logo_assets in BrainTrackingContoller.lua to track ad/logo impressions.
+
 ```
 -- client
 BrainTrackService:track(trackData) 
@@ -114,5 +116,7 @@ trackData may also contain keys 'choice','subchoice', 'scene', and 'context'
 There is basic debouncing which prevents the same event with identical values from being sent multiple times per minute. Please avoid sending repetitive data -  Roblox limits the number of outgoing http calls per minute and we don't want to track junk data.
 
 There is a 15-30 minute delay between event being recorded and it showing up in reports. Contact James Funk (stinkoDad20x6) if you need access to reports, need a new report specific to your game, or need a way to see events quicker.
- 
-You also want to put interesting information in the keepAlive section, replacing the text in "DevNeedsToUpdateWithGoodInfo".
+
+BrainTrackService:GetSummaryEvent() and BrainTrackService:SetSummaryEvent() are used to store 
+values that change during the lifetime of the user session are automatically sent when player
+leaves. Currently used to track total session time and summary of ad/logo impressions.
