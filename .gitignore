@@ -2,3 +2,4 @@ Packages/
 wally.lock
 wally.exe
 default.project.json
+*.DS_Store
