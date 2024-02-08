@@ -21,9 +21,7 @@
 
 ----- Module Table -----
 
-local MadworkMaid = {
-	
-}
+local MadworkMaid = {}
 
 ----- Private variables -----
 
@@ -87,25 +85,24 @@ local Maid = {
 Maid.__index = Maid
 
 function Maid:AddCleanupTask(task)
+	local doInsert: boolean = false
+	local typeTask: string = type(task)
 	if self._is_cleaned == true then
 		PerformCleanupTask(task)
 		return function() end
-	elseif type(task) == "function" then
-		table.insert(self._cleanup_tasks, task)
-	elseif typeof(task) == "RBXScriptConnection" then
-		table.insert(self._cleanup_tasks, task)
-	elseif typeof(task) == "Instance" then
-		table.insert(self._cleanup_tasks, task)
-	elseif type(task) == "table" then
-		if type(task.Destroy) == "function" then
-			table.insert(self._cleanup_tasks, task)
-		elseif type(task.Disconnect) == "function" then
-			table.insert(self._cleanup_tasks, task)
+	elseif typeTask == "function" or typeTask == "RBXScriptConnection" or typeTask == "Instance" then
+		doInsert = true
+	elseif typeTask == "table" then
+		if type(task.Destroy) == "function" or type(task.Disconnect) == "function" then
+			doInsert = true
 		else
 			error("[MadworkMaid]: Received object table as cleanup task, but couldn't detect a :Destroy() method")
 		end
 	else
-		error("[MadworkMaid]: Cleanup task of type \"" .. typeof(task) .. "\" not supported")
+		error('[MadworkMaid]: Cleanup task of type "' .. typeof(task) .. '" not supported')
+	end
+	if doInsert then
+		table.insert(self._cleanup_tasks, task)
 	end
 	return function(...)
 		self:RemoveCleanupTask(task)
