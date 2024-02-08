@@ -44,7 +44,8 @@ local rService = game:GetService("RunService")
 local tEvent
 
 if tEvent == nil and rService:IsServer() then
-	tEvent = Instance.new("RemoteEvent", script)
+	tEvent = Instance.new("RemoteEvent")
+	tEvent.Parent = script
 	tEvent.Name = "TweenEvent"
 else
 	tEvent = script:WaitForChild("TweenEvent")
