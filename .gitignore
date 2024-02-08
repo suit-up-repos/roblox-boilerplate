@@ -1,5 +1,10 @@
-Packages/
+Packages
+default.project.json
+sourcemap.json
 wally.lock
 wally.exe
-default.project.json
-*.DS_Store
+build
+*.rbxlx
+*.rbxl
+*.rbxl.lock
+.DS_Store

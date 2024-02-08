@@ -1,0 +1,88 @@
+name: CI-Code-Validation
+on: [push]
+
+jobs:
+  luau-lsp:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install dependencies
+        uses: ok-nick/setup-aftman@v0.4.2
+
+      # - name: Create folder
+      #   run: |
+      #     mkdir Packages -p
+
+      - name: Download type files
+        run: curl -L "https://raw.githubusercontent.com/JohnnyMorganz/luau-lsp/main/scripts/globalTypes.d.lua" > globalTypes.d.lua
+
+      - name: Install Wally
+        run: wally install
+
+      - name: Generate sourcemaps
+        run: rojo sourcemap --include-non-scripts --output sourcemap.json
+
+      - name: Generate package types
+        run: wally-package-types --sourcemap sourcemap.json Packages/
+
+      - name: Lint with luau-lsp
+        run: luau-lsp analyze --defs=globalTypes.d.lua --sourcemap=sourcemap.json --no-strict-dm-types --flag:LuauTinyControlFlowAnalysis=True src
+
+      - name: Send mail
+        if: ${{ failure() }}
+        uses: dawidd6/action-send-mail@v3
+        with:
+          # mail server settings
+          server_address: smtp.gmail.com
+          server_port: 465
+          # user credentials (need to add suitupg@gmail.com to current repo secrets)
+          username: ${{ secrets.EMAIL_USERNAME }}
+          password: ${{ secrets.EMAIL_PASSWORD }}
+          # email subject
+          subject: ${{ github.job }} job of ${{ github.repository }} has ${{ job.status }}
+          # email body as text
+          body: ${{ github.job }} job in worflow ${{ github.workflow }} of ${{ github.repository }} has ${{ job.status }}
+          # comma-separated string, send email to (send directly to production slack channel)
+          to: reminders-aaaalxjwkbmrfnuxn4u7yntota@fen.slack.com
+          # from email name
+          from: suitupg@gmail.com
+
+  selene:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install dependencies
+        uses: ok-nick/setup-aftman@v0.4.2
+
+      - name : Lint with selene
+        run: selene src
+
+      #- name: Check for StyLua formatting
+      #  uses: JohnnyMorganz/stylua-action@v3
+      #  with:
+      #    token: ${{ secrets.GITHUB_TOKEN }}
+      #    version: latest
+      #    args: --check src
+
+      - name: Send mail
+        if: ${{ failure() }}
+        uses: dawidd6/action-send-mail@v3
+        with:
+          # mail server settings
+          server_address: smtp.gmail.com
+          server_port: 465
+          # user credentials (need to add suitupg@gmail.com to current repo secrets)
+          username: ${{ secrets.EMAIL_USERNAME }}
+          password: ${{ secrets.EMAIL_PASSWORD }}
+          # email subject
+          subject: ${{ github.job }} job of ${{ github.repository }} has ${{ job.status }}
+          # email body as text
+          body: ${{ github.job }} job in worflow ${{ github.workflow }} of ${{ github.repository }} has ${{ job.status }}
+          # comma-separated string, send email to (send directly to production slack channel)
+          to: reminders-aaaalxjwkbmrfnuxn4u7yntota@fen.slack.com
+          # from email name
+          from: suitupg@gmail.com
