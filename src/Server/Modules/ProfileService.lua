@@ -2315,10 +2315,7 @@ task.spawn(function()
 			-- 1) Release all active profiles: --
 			-- Clone AutoSaveList to a new table because AutoSaveList changes when profiles are released:
 			local on_close_save_job_count = 0
-			local active_profiles = {}
-			for index, profile in ipairs(AutoSaveList) do
-				active_profiles[index] = profile
-			end
+			local active_profiles = AutoSaveList.clone()
 			-- Release the profiles; Releasing profiles can trigger listeners that release other profiles, so check active state:
 			for _, profile in ipairs(active_profiles) do
 				if profile:IsActive() == true then
