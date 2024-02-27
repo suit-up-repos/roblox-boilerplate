@@ -1,6 +1,6 @@
-local RunService = game:GetService("RunService")
 local CollectionService = game:GetService("CollectionService")
 local Players = game:GetService("Players")
+local RunService = game:GetService("RunService")
 -- local ReplicatedStorage = game:GetService("ReplicatedStorage")
 
 local Utils = {}
@@ -12,10 +12,16 @@ local animTypes = {
 }
 
 function Utils.deserializeEnum(enum: string, value: number): EnumItem | nil
-	if Enum[enum] ~= nil then
-		for _, item in ipairs(Enum[enum]:GetEnumItems()) do
-			if item.Value == value then
-				return item
+	-- iterate through all Enums (fixes issue with Enum[enum] not linting correctly)
+	for key, enumVal in pairs(Enum:GetEnums()) do
+		-- if value matches enum string
+		if tostring(enumVal) == enum then
+			-- get enum items for enum
+			for key, item in ipairs(enumVal:GetEnumItems()) do
+				-- if match value then return enum item
+				if item.Value == value then
+					return item
+				end
 			end
 		end
 	end
@@ -26,22 +32,20 @@ function Utils.serializeEnum(enum: string, item: EnumItem | string): number | ni
 	if typeof(item) == "EnumItem" then
 		return item.Value
 	end
-
-	if Enum[enum] ~= nil then
-		local enums = Enum[enum]:GetEnumItems()
-		return table.find(enums, item)
-	else
-		return nil
+	-- iterate through all Enums (fixes issue with Enum[enum] not linting correctly)
+	for key, enumVal in pairs(Enum:GetEnums()) do
+		-- if value matches enum string
+		if tostring(enumVal) == enum then
+			local enums = enumVal:GetEnumItems()
+			return table.find(enums, item)
+		end
 	end
+	return nil
 end
+
 function Utils.getRandomInPart(part)
 	local random = Random.new()
-	local randomCFrame = part.CFrame
-		* CFrame.new(
-			random:NextNumber(-part.Size.X / 2, part.Size.X / 2),
-			0,
-			random:NextNumber(-part.Size.Z / 2, part.Size.Z / 2)
-		)
+	local randomCFrame = part.CFrame * CFrame.new(random:NextNumber(-part.Size.X / 2, part.Size.X / 2), 0, random:NextNumber(-part.Size.Z / 2, part.Size.Z / 2))
 	return randomCFrame
 end
 
