@@ -43,6 +43,7 @@ function PlayerService:GetContainer(player)
 	else
 		warn("Could not get container for " .. tostring(player))
 	end
+	return
 end
 
 -- Useful if other things need to be done before/after a character is loaded

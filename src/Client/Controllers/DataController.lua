@@ -7,7 +7,7 @@
     relayed to other controllers on the client
 ]]
 -- local LocalPlayer = game.Players.LocalPlayer
-local PlayerScripts = game.Players.LocalPlayer:WaitForChild("PlayerScripts")
+-- local PlayerScripts = game.Players.LocalPlayer:WaitForChild("PlayerScripts")
 -- local PlayerGui = game.Players.LocalPlayer:WaitForChild("PlayerGui")
 -- local Modules = PlayerScripts:WaitForChild("Modules")
 

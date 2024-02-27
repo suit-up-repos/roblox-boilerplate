@@ -110,7 +110,11 @@ function PlayerContainer.new(player: Player?): PlayerContainer
 		end
 	end
 
-	print("[PlayerContainer] Created new container:", player.Name)
+	local playerName: string = nil
+	if player ~= nil then
+		playerName = player.Name
+	end
+	print("[PlayerContainer] Created new container:", playerName)
 
 	return self
 end

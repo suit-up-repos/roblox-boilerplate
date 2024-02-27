@@ -1,4 +1,4 @@
-local LocalPlayer = game.Players.LocalPlayer
+-- local LocalPlayer = game.Players.LocalPlayer
 -- set camera
 -- workspace.CurrentCamera.CameraType = Enum.CameraType.Scriptable
 

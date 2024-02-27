@@ -6,7 +6,7 @@
 ]]
 local ProximityPromptService = game:GetService("ProximityPromptService")
 local CollectionService = game:GetService("CollectionService")
-local ServerStorage = game:GetService("ServerStorage")
+-- local ServerStorage = game:GetService("ServerStorage")
 -- local Modules = ServerStorage:WaitForChild("Modules")
 
 local ReplicatedStorage = game:GetService("ReplicatedStorage")

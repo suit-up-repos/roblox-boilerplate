@@ -73,7 +73,7 @@ end
 
 function Utils.raycast(origin, direction, filterList, filterType, collisionGroup)
 	local raycastParams = RaycastParams.new()
-	raycastParams.FilterType = filterType or Enum.RaycastFilterType.Blacklist
+	raycastParams.FilterType = filterType or Enum.RaycastFilterType.Exclude
 	raycastParams.FilterDescendantsInstances = filterList
 	raycastParams.CollisionGroup = collisionGroup or "Default"
 
@@ -143,6 +143,7 @@ local function findFirstMatchingAttachment(model, name)
 			end
 		end
 	end
+	return
 end
 
 local RANGE_MODIFIER = 0.4

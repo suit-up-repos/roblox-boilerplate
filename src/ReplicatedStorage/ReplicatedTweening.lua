@@ -83,6 +83,7 @@ end
 
 function module:Create(instance, tInfo, propertyTable, inPlace)
 	local tweenMaster = {}
+	tweenMaster.Stopped = false
 	tweenMaster.DontUpdate = {} -- table of specific players that it stopped for part way.
 	tInfo = TweenInfo_To_Table(tInfo)
 
