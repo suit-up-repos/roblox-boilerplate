@@ -5,8 +5,8 @@
 
     Description: Manage player spawning and interactions with the server involving data
 ]]
-local Players = game:GetService("Players")
 local PhysicsService = game:GetService("PhysicsService")
+local Players = game:GetService("Players")
 
 local ServerStorage = game:GetService("ServerStorage")
 local Modules = ServerStorage:WaitForChild("Modules")

@@ -356,12 +356,7 @@ do
 		local listeners = CreateTableListenerPathIndex(self, path_array, 2)
 		table.insert(listeners, listener)
 		-- ScriptConnection which allows the disconnection of the listener:
-		return NewArrayScriptConnection(
-			listeners,
-			listener,
-			CleanTableListenerTable,
-			{ self._table_listeners, path_array }
-		)
+		return NewArrayScriptConnection(listeners, listener, CleanTableListenerTable, { self._table_listeners, path_array })
 	end
 
 	function Replica:ListenToNewKey(path, listener) --> [ScriptConnection] listener(new_value, new_key)
@@ -377,12 +372,7 @@ do
 		if #path_array == 0 then
 			return NewArrayScriptConnection(listeners, listener)
 		else
-			return NewArrayScriptConnection(
-				listeners,
-				listener,
-				CleanTableListenerTable,
-				{ self._table_listeners, path_array }
-			)
+			return NewArrayScriptConnection(listeners, listener, CleanTableListenerTable, { self._table_listeners, path_array })
 		end
 	end
 
@@ -399,12 +389,7 @@ do
 		if #path_array == 0 then
 			return NewArrayScriptConnection(listeners, listener)
 		else
-			return NewArrayScriptConnection(
-				listeners,
-				listener,
-				CleanTableListenerTable,
-				{ self._table_listeners, path_array }
-			)
+			return NewArrayScriptConnection(listeners, listener, CleanTableListenerTable, { self._table_listeners, path_array })
 		end
 	end
 
@@ -421,12 +406,7 @@ do
 		if #path_array == 0 then
 			return NewArrayScriptConnection(listeners, listener)
 		else
-			return NewArrayScriptConnection(
-				listeners,
-				listener,
-				CleanTableListenerTable,
-				{ self._table_listeners, path_array }
-			)
+			return NewArrayScriptConnection(listeners, listener, CleanTableListenerTable, { self._table_listeners, path_array })
 		end
 	end
 
@@ -443,12 +423,7 @@ do
 		if #path_array == 0 then
 			return NewArrayScriptConnection(listeners, listener)
 		else
-			return NewArrayScriptConnection(
-				listeners,
-				listener,
-				CleanTableListenerTable,
-				{ self._table_listeners, path_array }
-			)
+			return NewArrayScriptConnection(listeners, listener, CleanTableListenerTable, { self._table_listeners, path_array })
 		end
 	end
 
@@ -463,11 +438,7 @@ do
 		local func_id = self._write_lib[function_name]
 		func_id = func_id and func_id[1]
 		if func_id == nil then
-			error(
-				'[ReplicaService]: Write function "'
-					.. function_name
-					.. '" not declared inside _write_lib of this replica'
-			)
+			error('[ReplicaService]: Write function "' .. function_name .. '" not declared inside _write_lib of this replica')
 		end
 
 		-- Getting listener table for given path:

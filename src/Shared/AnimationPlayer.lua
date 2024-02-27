@@ -67,7 +67,7 @@ function AnimationPlayer:AddAnimation(Name, AnimationId)
 	local Animation = Instance.new("Animation")
 
 	if tonumber(AnimationId) then
-		Animation.AnimationId = "http://www.roblox.com/Asset?ID=" .. tonumber(AnimationId) or error("No AnimationId")
+		Animation.AnimationId = "http://www.roblox.com/Asset?ID=" .. AnimationId or error("No AnimationId")
 	else
 		Animation.AnimationId = AnimationId
 	end

@@ -123,7 +123,7 @@ local SETTINGS = {
 local Madwork -- Standalone Madwork reference for portable version of ReplicaService/ReplicaController
 do
 	local RunService = game:GetService("RunService")
-	
+
 	local function WaitForDescendant(ancestor, instance_name, warn_name)
 		local instance = ancestor:FindFirstChild(instance_name, true) -- Recursive
 		if instance == nil then
@@ -135,11 +135,19 @@ do
 				end
 			end)
 			while instance == nil do
-				if start_time ~= nil and os.clock() - start_time > 1
-					and (RunService:IsServer() == true or game:IsLoaded() == true) then
+				if start_time ~= nil and os.clock() - start_time > 1 and (RunService:IsServer() == true or game:IsLoaded() == true) then
 					start_time = nil
-					warn("[" .. script.Name .. "]: Missing " .. warn_name .. " \"" .. instance_name
-						.. "\" in " .. ancestor:GetFullName() .. "; Please check setup documentation")
+					warn(
+						"["
+							.. script.Name
+							.. "]: Missing "
+							.. warn_name
+							.. ' "'
+							.. instance_name
+							.. '" in '
+							.. ancestor:GetFullName()
+							.. "; Please check setup documentation"
+					)
 				end
 				task.wait()
 			end
@@ -149,7 +157,7 @@ do
 			return instance
 		end
 	end
-	
+
 	local RemoteEventContainer
 	if RunService:IsServer() == true then
 		RemoteEventContainer = Instance.new("Folder")
@@ -158,7 +166,7 @@ do
 	else
 		RemoteEventContainer = WaitForDescendant(game:GetService("ReplicatedStorage"), "ReplicaRemoteEvents", "folder")
 	end
-	
+
 	Madwork = {
 		GetShared = function(package_name, item_name)
 			-- Ignoring package_name as we're working without Madwork framework
@@ -179,7 +187,7 @@ do
 		end,
 		Shared = {}, -- A Madwork package reference - ReplicaService will try to check this table
 	}
-	
+
 	local MadworkScriptSignal = require(Madwork.GetShared("Madwork", "MadworkScriptSignal"))
 	Madwork.NewScriptSignal = MadworkScriptSignal.NewScriptSignal
 	Madwork.NewArrayScriptConnection = MadworkScriptSignal.NewArrayScriptConnection
@@ -219,7 +227,6 @@ local ReplicaController = {
 
 	_class_listeners = {}, -- {["replica_class"] = script_signal, ...}
 	_child_listeners = {}, -- {[replica_id] = {listener, ...}, ...}
-
 }
 
 --[[
@@ -267,22 +274,21 @@ local NewReplicaSignal = ReplicaController.NewReplicaSignal
 local ClassListeners = ReplicaController._class_listeners -- {["replica_class"] = script_signal, ...}
 local ChildListeners = ReplicaController._child_listeners -- {[replica_id] = {listener, ...}, ...}
 
-local rev_ReplicaRequestData = Madwork.SetupRemoteEvent("Replica_ReplicaRequestData")   -- Fired client-side when the client loads for the first time
+local rev_ReplicaRequestData = Madwork.SetupRemoteEvent("Replica_ReplicaRequestData") -- Fired client-side when the client loads for the first time
 
-local rev_ReplicaIncrementValue = Madwork.SetupRemoteEvent("Replica_ReplicaIncrementValue")         -- (replica_id, {path}, value)
-local rev_ReplicaIncrementValues = Madwork.SetupRemoteEvent("Replica_ReplicaIncrementValues")       -- (replica_id, {path}, {values})
+local rev_ReplicaIncrementValue = Madwork.SetupRemoteEvent("Replica_ReplicaIncrementValue") -- (replica_id, {path}, value)
+local rev_ReplicaIncrementValues = Madwork.SetupRemoteEvent("Replica_ReplicaIncrementValues") -- (replica_id, {path}, {values})
 
-
-local rev_ReplicaSetValue = Madwork.SetupRemoteEvent("Replica_ReplicaSetValue")         -- (replica_id, {path}, value)
-local rev_ReplicaSetValues = Madwork.SetupRemoteEvent("Replica_ReplicaSetValues")       -- (replica_id, {path}, {values})
-local rev_ReplicaArrayInsert = Madwork.SetupRemoteEvent("Replica_ReplicaArrayInsert")   -- (replica_id, {path}, value)
-local rev_ReplicaArraySet = Madwork.SetupRemoteEvent("Replica_ReplicaArraySet")         -- (replica_id, {path}, index, value)
-local rev_ReplicaArrayRemove = Madwork.SetupRemoteEvent("Replica_ReplicaArrayRemove")   -- (replica_id, {path}, index)
-local rev_ReplicaWrite = Madwork.SetupRemoteEvent("Replica_ReplicaWrite")               -- (replica_id, func_id, params...)
-local rev_ReplicaSignal = Madwork.SetupRemoteEvent("Replica_ReplicaSignal")             -- (replica_id, params...)
-local rev_ReplicaSetParent = Madwork.SetupRemoteEvent("Replica_ReplicaSetParent")       -- (replica_id, parent_replica_id)
-local rev_ReplicaCreate = Madwork.SetupRemoteEvent("Replica_ReplicaCreate")             -- (replica_id, {replica_data}) OR (top_replica_id, {creation_data}) or ({replica_package})
-local rev_ReplicaDestroy = Madwork.SetupRemoteEvent("Replica_ReplicaDestroy")           -- (replica_id)
+local rev_ReplicaSetValue = Madwork.SetupRemoteEvent("Replica_ReplicaSetValue") -- (replica_id, {path}, value)
+local rev_ReplicaSetValues = Madwork.SetupRemoteEvent("Replica_ReplicaSetValues") -- (replica_id, {path}, {values})
+local rev_ReplicaArrayInsert = Madwork.SetupRemoteEvent("Replica_ReplicaArrayInsert") -- (replica_id, {path}, value)
+local rev_ReplicaArraySet = Madwork.SetupRemoteEvent("Replica_ReplicaArraySet") -- (replica_id, {path}, index, value)
+local rev_ReplicaArrayRemove = Madwork.SetupRemoteEvent("Replica_ReplicaArrayRemove") -- (replica_id, {path}, index)
+local rev_ReplicaWrite = Madwork.SetupRemoteEvent("Replica_ReplicaWrite") -- (replica_id, func_id, params...)
+local rev_ReplicaSignal = Madwork.SetupRemoteEvent("Replica_ReplicaSignal") -- (replica_id, params...)
+local rev_ReplicaSetParent = Madwork.SetupRemoteEvent("Replica_ReplicaSetParent") -- (replica_id, parent_replica_id)
+local rev_ReplicaCreate = Madwork.SetupRemoteEvent("Replica_ReplicaCreate") -- (replica_id, {replica_data}) OR (top_replica_id, {creation_data}) or ({replica_package})
+local rev_ReplicaDestroy = Madwork.SetupRemoteEvent("Replica_ReplicaDestroy") -- (replica_id)
 
 local DataRequestStarted = false
 
@@ -306,9 +312,11 @@ local function GetWriteLibFunctionsRecursive(list_table, pointer, name_stack)
 		if type(value) == "table" then
 			GetWriteLibFunctionsRecursive(list_table, value, name_stack .. key .. ".")
 		elseif type(value) == "function" then
-			table.insert(list_table, {name_stack .. key, value})
+			table.insert(list_table, { name_stack .. key, value })
 		else
-			error("[ReplicaController]: Invalid write function value \"" .. tostring(value) .. "\" (" .. typeof(value) .. "); name_stack = \"" .. name_stack .. "\"")
+			error(
+				'[ReplicaController]: Invalid write function value "' .. tostring(value) .. '" (' .. typeof(value) .. '); name_stack = "' .. name_stack .. '"'
+			)
 		end
 	end
 end
@@ -336,7 +344,7 @@ local function LoadWriteLib(write_lib_module)
 		write_lib_dictionary[func_params[1]] = func_id
 	end
 
-	local write_lib_pack = {write_lib, write_lib_dictionary}
+	local write_lib_pack = { write_lib, write_lib_dictionary }
 
 	LoadedWriteLibPacks[write_lib_module] = write_lib_pack
 
@@ -382,7 +390,7 @@ local function CreateTableListenerPathIndex(replica, path_array, listener_type)
 	for i = 1, #path_array do
 		local key_listeners = listeners[1][path_array[i]]
 		if key_listeners == nil then
-			key_listeners = {[1] = {}}
+			key_listeners = { [1] = {} }
 			listeners[1][path_array[i]] = key_listeners
 		end
 		listeners = key_listeners
@@ -400,7 +408,7 @@ local function CleanTableListenerTable(disconnect_param)
 	local table_listeners = disconnect_param[1]
 	local path_array = disconnect_param[2]
 	local pointer = table_listeners
-	local pointer_stack = {pointer}
+	local pointer_stack = { pointer }
 	for i = 1, #path_array do
 		pointer = pointer[1][path_array[i]]
 		table.insert(pointer_stack, pointer)
@@ -466,7 +474,7 @@ local function CreateReplicaBranch(replica_entries, created_replicas) --> create
 			_write_lib = write_lib,
 			_write_lib_dictionary = write_lib_dictionary,
 
-			_table_listeners = {[1] = {}},
+			_table_listeners = { [1] = {} },
 			_function_listeners = {},
 			_raw_listeners = {},
 
@@ -776,7 +784,7 @@ function Replica:ListenToChange(path, listener) --> [ScriptConnection] listener(
 	local listeners = CreateTableListenerPathIndex(self, path_array, 2)
 	table.insert(listeners, listener)
 	-- ScriptConnection which allows the disconnection of the listener:
-	return Madwork.NewArrayScriptConnection(listeners, listener, CleanTableListenerTable, {self._table_listeners, path_array})
+	return Madwork.NewArrayScriptConnection(listeners, listener, CleanTableListenerTable, { self._table_listeners, path_array })
 end
 
 function Replica:ListenToNewKey(path, listener) --> [ScriptConnection] listener(new_value, new_key)
@@ -792,7 +800,7 @@ function Replica:ListenToNewKey(path, listener) --> [ScriptConnection] listener(
 	if #path_array == 0 then
 		return Madwork.NewArrayScriptConnection(listeners, listener)
 	else
-		return Madwork.NewArrayScriptConnection(listeners, listener, CleanTableListenerTable, {self._table_listeners, path_array})
+		return Madwork.NewArrayScriptConnection(listeners, listener, CleanTableListenerTable, { self._table_listeners, path_array })
 	end
 end
 
@@ -809,7 +817,7 @@ function Replica:ListenToArrayInsert(path, listener) --> [ScriptConnection] list
 	if #path_array == 0 then
 		return Madwork.NewArrayScriptConnection(listeners, listener)
 	else
-		return Madwork.NewArrayScriptConnection(listeners, listener, CleanTableListenerTable, {self._table_listeners, path_array})
+		return Madwork.NewArrayScriptConnection(listeners, listener, CleanTableListenerTable, { self._table_listeners, path_array })
 	end
 end
 
@@ -826,7 +834,7 @@ function Replica:ListenToArraySet(path, listener) --> [ScriptConnection] listene
 	if #path_array == 0 then
 		return Madwork.NewArrayScriptConnection(listeners, listener)
 	else
-		return Madwork.NewArrayScriptConnection(listeners, listener, CleanTableListenerTable, {self._table_listeners, path_array})
+		return Madwork.NewArrayScriptConnection(listeners, listener, CleanTableListenerTable, { self._table_listeners, path_array })
 	end
 end
 
@@ -843,7 +851,7 @@ function Replica:ListenToArrayRemove(path, listener) --> [ScriptConnection] list
 	if #path_array == 0 then
 		return Madwork.NewArrayScriptConnection(listeners, listener)
 	else
-		return Madwork.NewArrayScriptConnection(listeners, listener, CleanTableListenerTable, {self._table_listeners, path_array})
+		return Madwork.NewArrayScriptConnection(listeners, listener, CleanTableListenerTable, { self._table_listeners, path_array })
 	end
 end
 
@@ -857,7 +865,7 @@ function Replica:ListenToWrite(function_name, listener) --> [ScriptConnection] l
 
 	local func_id = self._write_lib_dictionary[function_name]
 	if func_id == nil then
-		error("[ReplicaController]: Write function \"" .. function_name .. "\" not declared inside _write_lib of this replica")
+		error('[ReplicaController]: Write function "' .. function_name .. '" not declared inside _write_lib of this replica')
 	end
 
 	-- Getting listener table for given path:
@@ -1080,7 +1088,6 @@ rev_ReplicaIncrementValue.OnClientEvent:Connect(ReplicaIncrementValue) -- (repli
 
 rev_ReplicaIncrementValues.OnClientEvent:Connect(ReplicaIncrementValues) -- (replica_id, {path}, {values})
 
-
 rev_ReplicaArrayInsert.OnClientEvent:Connect(ReplicaArrayInsert) -- (replica_id, {path}, value)
 
 rev_ReplicaArraySet.OnClientEvent:Connect(ReplicaArraySet) -- (replica_id, {path}, index, value)
@@ -1151,7 +1158,7 @@ rev_ReplicaCreate.OnClientEvent:Connect(function(param1, param2) -- (top_replica
 			CreateReplicaBranch(replica_branch_entry[2], created_replicas)
 		end
 	elseif param2[1] ~= nil then -- One replica data
-		CreateReplicaBranch({[tostring(param1)] = param2}, created_replicas)
+		CreateReplicaBranch({ [tostring(param1)] = param2 }, created_replicas)
 	else -- Creation data table
 		CreateReplicaBranch(param2, created_replicas)
 	end

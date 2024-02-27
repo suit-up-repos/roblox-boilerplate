@@ -4,8 +4,8 @@
 
     Description: Manage player spawning and interactions with the server involving data
 ]]
-local ProximityPromptService = game:GetService("ProximityPromptService")
 local CollectionService = game:GetService("CollectionService")
+local ProximityPromptService = game:GetService("ProximityPromptService")
 -- local ServerStorage = game:GetService("ServerStorage")
 -- local Modules = ServerStorage:WaitForChild("Modules")
 

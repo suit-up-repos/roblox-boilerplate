@@ -111,10 +111,7 @@ local postie = {}
 function postie.InvokeClient(id, player, timeout, ...)
 	assert(isServer, "Postie.InvokeClient can only be called from the server")
 	assert(typeof(id) == "string", "bad argument #1 to Postie.InvokeClient, expects string")
-	assert(
-		typeof(player) == "Instance" and player:IsA("Player"),
-		"bad argument #2 to Postie.InvokeClient, expects Instance<Player>"
-	)
+	assert(typeof(player) == "Instance" and player:IsA("Player"), "bad argument #2 to Postie.InvokeClient, expects Instance<Player>")
 	assert(typeof(timeout) == "number", "bad argument #3 to Postie.InvokeClient, expects number")
 	local bindable = Instance.new("BindableEvent")
 	local isResumed = false

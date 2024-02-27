@@ -39,8 +39,8 @@
 --]]
 
 local module = {}
-local tService = game:GetService("TweenService")
 local rService = game:GetService("RunService")
+local tService = game:GetService("TweenService")
 local tEvent
 
 if tEvent == nil and rService:IsServer() then

@@ -59,7 +59,7 @@ RateLimiterObject.__index = RateLimiterObject
 function RateLimiterObject:CheckRate(source) --> is_to_be_processed [bool] -- Whether event should be processed
 	local sources = self._sources
 	local os_clock = os.clock()
-	
+
 	local rate_time = sources[source]
 	if rate_time ~= nil then
 		rate_time = math.max(os_clock, rate_time + self._rate_period)
@@ -71,8 +71,7 @@ function RateLimiterObject:CheckRate(source) --> is_to_be_processed [bool] -- Wh
 		end
 	else
 		-- Preventing from remembering players that already left:
-		if typeof(source) == "Instance" and source:IsA("Player")
-			and PlayerReference[source] == nil then
+		if typeof(source) == "Instance" and source:IsA("Player") and PlayerReference[source] == nil then
 			return false
 		end
 		sources[source] = os_clock + self._rate_period
@@ -97,15 +96,15 @@ function RateLimiter.NewRateLimiter(rate) --> [RateLimiter]
 	if rate <= 0 then
 		error("[RateLimiter]: Invalid rate")
 	end
-	
+
 	local rate_limiter = {
 		_sources = {},
 		_rate_period = 1 / rate,
 	}
 	setmetatable(rate_limiter, RateLimiterObject)
-	
+
 	RateLimiters[rate_limiter] = true
-	
+
 	return rate_limiter
 end
 

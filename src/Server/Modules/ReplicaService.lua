@@ -144,11 +144,7 @@ do
 				end
 			end)
 			while instance == nil do
-				if
-					start_time ~= nil
-					and os.clock() - start_time > 1
-					and (RunService:IsServer() == true or game:IsLoaded() == true)
-				then
+				if start_time ~= nil and os.clock() - start_time > 1 and (RunService:IsServer() == true or game:IsLoaded() == true) then
 					start_time = nil
 					warn(
 						"["
@@ -259,8 +255,8 @@ local ReplicaService = {
 
 ----- Loaded Services & Modules -----
 
-local RateLimiter = require(Madwork.GetShared("Madwork", "RateLimiter"))
 local MadworkMaid = require(Madwork.GetShared("Madwork", "MadworkMaid"))
+local RateLimiter = require(Madwork.GetShared("Madwork", "RateLimiter"))
 
 ----- Private Variables -----
 
@@ -317,15 +313,7 @@ local function GetWriteLibFunctionsRecursive(list_table, pointer, name_stack)
 		elseif type(value) == "function" then
 			table.insert(list_table, { name_stack .. key, value })
 		else
-			error(
-				'[ReplicaService]: Invalid write function value "'
-					.. tostring(value)
-					.. '" ('
-					.. typeof(value)
-					.. '); name_stack = "'
-					.. name_stack
-					.. '"'
-			)
+			error('[ReplicaService]: Invalid write function value "' .. tostring(value) .. '" (' .. typeof(value) .. '); name_stack = "' .. name_stack .. '"')
 		end
 	end
 end
@@ -349,9 +337,7 @@ local function LoadWriteLib(write_lib_module)
 			end
 		end
 		if found_in_shared == false then
-			error(
-				'[ReplicaService]: Write library module must be a descendant of ReplicatedStorage or "Shared" directory'
-			)
+			error('[ReplicaService]: Write library module must be a descendant of ReplicatedStorage or "Shared" directory')
 		end
 	end
 
@@ -756,10 +742,7 @@ function Replica:SetParent(new_parent)
 			no_replication_check = old_replication
 		end
 		for player in pairs(no_replication_check) do
-			if
-				(old_replication[player] == true or old_replication.All == true)
-				and (new_replication[player] == true or new_replication.All == true)
-			then
+			if (old_replication[player] == true or old_replication.All == true) and (new_replication[player] == true or new_replication.All == true) then
 				rev_ReplicaSetParent:FireClient(player, replica_id, new_parent.Id)
 			end
 		end
@@ -856,9 +839,7 @@ function Replica:ReplicateFor(param)
 		end
 	else
 		if param ~= "All" then
-			error(
-				'[ReplicaService]: Don\'t selectively replicate for clients when replica is replicated to All - :DestroyFor("All") first'
-			)
+			error('[ReplicaService]: Don\'t selectively replicate for clients when replica is replicated to All - :DestroyFor("All") first')
 		end
 	end
 end
@@ -1030,11 +1011,7 @@ function ReplicaService.NewReplica(replica_params) --> [Replica]
 				error("[ReplicaService]: Invalid value for param1")
 			end
 		else
-			error(
-				"[ReplicaService]: Invalid value for replica_params.Replication ("
-					.. tostring(replication_settings)
-					.. ")"
-			)
+			error("[ReplicaService]: Invalid value for replica_params.Replication (" .. tostring(replication_settings) .. ")")
 		end
 	end
 
@@ -1053,8 +1030,7 @@ function ReplicaService.NewReplica(replica_params) --> [Replica]
 		creation_data = {}
 	end
 
-	local creation_data_of_one =
-		{ replica_class, replica_tags, data_table, (parent ~= nil) and parent.Id or 0, replica_params.WriteLib }
+	local creation_data_of_one = { replica_class, replica_tags, data_table, (parent ~= nil) and parent.Id or 0, replica_params.WriteLib }
 	creation_data[tostring(ReplicaIndex)] = creation_data_of_one
 
 	-- New Replica object table:
@@ -1124,12 +1100,7 @@ do
 				LockReplicaMethods[method_name] = func
 			else
 				LockReplicaMethods[method_name] = function(self)
-					error(
-						'[ReplicaService]: Tried to call method "'
-							.. method_name
-							.. '" for a destroyed replica; '
-							.. self:Identify()
-					)
+					error('[ReplicaService]: Tried to call method "' .. method_name .. '" for a destroyed replica; ' .. self:Identify())
 				end
 			end
 		end
@@ -1178,11 +1149,7 @@ end)
 -- Client-invoked replica signals:
 rev_ReplicaSignal.OnServerEvent:Connect(function(player, replica_id, ...)
 	-- Missing player prevention, spam prevention and exploit prevention:
-	if
-		ActivePlayers[player] == nil
-		or DefaultRateLimiter:CheckRate(player) == false
-		or type(replica_id) ~= "number"
-	then
+	if ActivePlayers[player] == nil or DefaultRateLimiter:CheckRate(player) == false or type(replica_id) ~= "number" then
 		return
 	end
 

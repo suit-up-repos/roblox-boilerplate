@@ -40,9 +40,7 @@
 
 ----- Module Table -----
 
-local MadworkScriptSignal = {
-
-}
+local MadworkScriptSignal = {}
 
 ----- Private variables -----
 
@@ -110,7 +108,7 @@ function MadworkScriptSignal.NewArrayScriptConnection(listener_table, listener, 
 		_listener_table = listener_table,
 		_disconnect_listener = disconnect_listener,
 		_disconnect_param = disconnect_param,
-		Disconnect = ArrayScriptConnection.Disconnect
+		Disconnect = ArrayScriptConnection.Disconnect,
 	}
 end
 
@@ -130,7 +128,6 @@ local ScriptConnection = {
 ScriptConnection.__index = ScriptConnection
 
 function ScriptConnection:Disconnect()
-
 	if self._is_connected == false then
 		return
 	end
@@ -157,7 +154,6 @@ function ScriptConnection:Disconnect()
 		task.spawn(FreeRunnerThread, self._disconnect_listener, self._disconnect_param)
 		self._disconnect_listener = nil
 	end
-
 end
 
 -- ScriptSignal object:
@@ -171,7 +167,6 @@ local ScriptSignal = {
 ScriptSignal.__index = ScriptSignal
 
 function ScriptSignal:Connect(listener, disconnect_listener, disconnect_param) --> [ScriptConnection]
-
 	local script_connection = {
 		_listener = listener,
 		_script_signal = self,
@@ -187,7 +182,6 @@ function ScriptSignal:Connect(listener, disconnect_listener, disconnect_param) -
 	self._listener_count += 1
 
 	return script_connection
-
 end
 
 function ScriptSignal:GetListenerCount() --> [number]

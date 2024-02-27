@@ -1,5 +1,5 @@
 return {
-    'PlayerProfile',
-    'MobContainer',
-    'MobZone'
+	"PlayerProfile",
+	"MobContainer",
+	"MobZone",
 }
