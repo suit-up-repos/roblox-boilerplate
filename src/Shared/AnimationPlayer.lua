@@ -1,7 +1,7 @@
 --- Makes playing and loading tracks into a humanoid easy
 -- @classmod AnimationPlayer
 local RunService = game:GetService("RunService")
-local Knit = require(game.ReplicatedStorage.Packages.Knit)
+-- local Knit = require(game.ReplicatedStorage.Packages.Knit)
 local Signal = require(game.ReplicatedStorage.Packages.Signal)
 
 local AnimationPlayer = {}
@@ -91,12 +91,12 @@ end
 -- @tparam string TrackName Name of the track to play
 -- @tparam[opt=0.4] number FadeTime How much time it will take to transition into the animation.
 -- @tparam[opt=1] number Weight Acts as a multiplier for the offsets and rotations of the playing animation
-	-- This parameter is extremely unstable.
-	-- Any parameter higher than 1.5 will result in very shaky motion, and any parameter higher '
-	-- than 2 will almost always result in NAN errors. Use with caution.
+-- This parameter is extremely unstable.
+-- Any parameter higher than 1.5 will result in very shaky motion, and any parameter higher '
+-- than 2 will almost always result in NAN errors. Use with caution.
 -- @tparam[opt=1] number Speed The time scale of the animation.
-	-- Setting this to 2 will make the animation 2x faster, and setting it to 0.5 will make it
-	-- run 2x slower.
+-- Setting this to 2 will make the animation 2x faster, and setting it to 0.5 will make it
+-- run 2x slower.
 -- @tparam[opt=0.4] number StopFadeTime
 function AnimationPlayer:PlayTrack(TrackName, FadeTime, Weight, Speed, StopFadeTime)
 	FadeTime = FadeTime or self.FadeTime

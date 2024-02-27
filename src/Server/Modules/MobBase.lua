@@ -1,15 +1,12 @@
 local module = {}
-local actor = script.Parent
+-- local actor = script.Parent
 
-function module:Presync()
-end
+function module:Presync() end
 
 function module:Desync()
-    task.desynchronize()
+	task.desynchronize()
 end
 
-function module:Sync()
-
-end
+function module:Sync() end
 
 return module

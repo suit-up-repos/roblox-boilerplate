@@ -127,7 +127,7 @@
 		
 --]]
 
-local SETTINGS = {}
+-- local SETTINGS = {}
 
 local Madwork -- Standalone Madwork reference for portable version of ReplicaService/ReplicaController
 do

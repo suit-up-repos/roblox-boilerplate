@@ -17,7 +17,7 @@ local ProfileService = require(Modules.ProfileService)
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
 local Shared = ReplicatedStorage:WaitForChild("Shared")
 
-local Knit = require(ReplicatedStorage.Packages.Knit)
+-- local Knit = require(ReplicatedStorage.Packages.Knit)
 local Janitor = require(game.ReplicatedStorage.Packages.Janitor)
 
 local PlayerContainer = {}
@@ -25,7 +25,7 @@ PlayerContainer.__index = PlayerContainer
 
 PlayerContainer.Tag = "PlayerContainer"
 
-local DATA_VERSION = 1
+-- local DATA_VERSION = 1
 
 -- // Edit your player data here!
 local TEMPLATE_DATA = {
@@ -59,7 +59,12 @@ function PlayerContainer.new(player: Player?): PlayerContainer
 		Replica = nil,
 	}, PlayerContainer)
 
-	local profile = ProfileStore:LoadProfileAsync(tostring(player.UserId), "ForceLoad")
+	local playerID: string = nil
+	if player ~= nil then
+		playerID = tostring(player.UserId)
+	end
+
+	local profile = ProfileStore:LoadProfileAsync(playerID, "ForceLoad")
 	if profile ~= nil then
 		-- update data according to template
 		profile:Reconcile()
@@ -68,14 +73,16 @@ function PlayerContainer.new(player: Player?): PlayerContainer
 		-- setup disconnect
 		profile:ListenToRelease(function()
 			self.Replica:Destroy()
-			player:Kick()
+			if player ~= nil then
+				player:Kick()
+			end
 		end)
 
 		-- check first time load
 		if profile:GetMetaTag("FirstTimeLoad") == nil then
 			profile:SetMetaTag("FirstTimeLoad", true)
 		end
-		if player:IsDescendantOf(game.Players) == true then
+		if player ~= nil and player:IsDescendantOf(game.Players) == true then
 			self.Profile = profile
 			self.Replica = ReplicaService.NewReplica({
 				ClassToken = PlayerProfileClassToken,
@@ -98,7 +105,9 @@ function PlayerContainer.new(player: Player?): PlayerContainer
 			profile:Release()
 		end
 	else
-		player:Kick("Data profile could not be loaded. Are you already playing somewhere else?")
+		if player ~= nil then
+			player:Kick("Data profile could not be loaded. Are you already playing somewhere else?")
+		end
 	end
 
 	print("[PlayerContainer] Created new container:", player.Name)

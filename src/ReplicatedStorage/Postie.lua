@@ -69,7 +69,7 @@
 -- dependencies:
 local httpService = game:GetService("HttpService")
 local runService = game:GetService("RunService")
-local replicatedStorage = game:GetService("ReplicatedStorage")
+-- local replicatedStorage = game:GetService("ReplicatedStorage")
 
 if not script:FindFirstChild("Sent") then
 	--Create
@@ -104,7 +104,6 @@ local function spawnNow(callback, ...)
 	bindable:Destroy()
 end
 
-
 -- Postie:
 local postie = {}
 
@@ -112,7 +111,10 @@ local postie = {}
 function postie.InvokeClient(id, player, timeout, ...)
 	assert(isServer, "Postie.InvokeClient can only be called from the server")
 	assert(typeof(id) == "string", "bad argument #1 to Postie.InvokeClient, expects string")
-	assert(typeof(player) == "Instance" and player:IsA("Player"), "bad argument #2 to Postie.InvokeClient, expects Instance<Player>")
+	assert(
+		typeof(player) == "Instance" and player:IsA("Player"),
+		"bad argument #2 to Postie.InvokeClient, expects Instance<Player>"
+	)
 	assert(typeof(timeout) == "number", "bad argument #3 to Postie.InvokeClient, expects number")
 	local bindable = Instance.new("BindableEvent")
 	local isResumed = false
@@ -121,7 +123,9 @@ function postie.InvokeClient(id, player, timeout, ...)
 	local uuid = httpService:GenerateGUID(false)
 	-- await signal from client
 	listeners[pos] = function(playerWhoFired, signalUuid, ...)
-		if not (playerWhoFired == player and signalUuid == uuid) then return false end
+		if not (playerWhoFired == player and signalUuid == uuid) then
+			return false
+		end
 		isResumed = true
 		table.remove(listeners, pos)
 		bindable:Fire(true, ...)
@@ -130,7 +134,9 @@ function postie.InvokeClient(id, player, timeout, ...)
 	-- await timeout
 	spawnNow(function()
 		wait(timeout)
-		if isResumed then return end
+		if isResumed then
+			return
+		end
 		table.remove(listeners, pos)
 		bindable:Fire(false)
 	end)
@@ -151,7 +157,9 @@ function postie.InvokeServer(id, timeout, ...)
 	local uuid = httpService:GenerateGUID(false)
 	-- await signal from client
 	listeners[pos] = function(signalUuid, ...)
-		if signalUuid ~= uuid then return false end
+		if signalUuid ~= uuid then
+			return false
+		end
 		isResumed = true
 		table.remove(listeners, pos)
 		bindable:Fire(true, ...)
@@ -160,7 +168,9 @@ function postie.InvokeServer(id, timeout, ...)
 	-- await timeout
 	spawnNow(function()
 		wait(timeout)
-		if isResumed then return end
+		if isResumed then
+			return
+		end
 		table.remove(listeners, pos)
 		bindable:Fire(false)
 	end)
@@ -181,14 +191,15 @@ function postie.GetCallback(id)
 	return idToCallbackMap[id]
 end
 
-
 -- main:
 -- handle signals
 if isServer then
 	-- handle received
 	received.OnServerEvent:Connect(function(...)
 		for _, listener in ipairs(listeners) do
-			if listener(...) then return end
+			if listener(...) then
+				return
+			end
 		end
 	end)
 	-- handle sent
@@ -200,7 +211,9 @@ else
 	-- handle received
 	received.OnClientEvent:Connect(function(...)
 		for _, listener in ipairs(listeners) do
-			if listener(...) then return end
+			if listener(...) then
+				return
+			end
 		end
 	end)
 	-- handle sent
