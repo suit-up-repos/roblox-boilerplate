@@ -5,7 +5,7 @@
     Custom middleware for ReplicaService (https://madstudioroblox.github.io/ReplicaService/) that ensures data for a
     player is loaded before they can interact with the game
 ]]
-local PlayerScripts = game.Players.LocalPlayer:WaitForChild("PlayerScripts")
+-- local PlayerScripts = game.Players.LocalPlayer:WaitForChild("PlayerScripts")
 -- local Modules = PlayerScripts:WaitForChild("Modules")
 
 local ReplicatedStorage = game:GetService("ReplicatedStorage")

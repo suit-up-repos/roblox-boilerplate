@@ -1,4 +1,5 @@
 std = "roblox"
+std = "luau"
 
 [rules]
 undefined_variable = "allow"
