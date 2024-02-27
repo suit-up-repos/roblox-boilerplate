@@ -1,4 +1,4 @@
-std = "roblox"
+std = "roblox.yml"
 
 [rules]
 undefined_variable = "allow"
