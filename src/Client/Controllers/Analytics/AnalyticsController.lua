@@ -49,7 +49,7 @@ function AnalyticsController:KnitStart()
 		local timeout: number = 10
 
 		local teleportData: StringValue? = ReplicatedFirst:WaitForChild("teleportData", timeout)
-		playerTeleportedToGame = teleportData and (teleportData.Value == "no data" or #teleportData.Value == 0)
+		playerTeleportedToGame = teleportData ~= nil and (teleportData.Value == "no data" or #teleportData.Value == 0)
 
 		if playerTeleportedToGame then
 			self.AnalyticsService.LogEvent:Fire({
