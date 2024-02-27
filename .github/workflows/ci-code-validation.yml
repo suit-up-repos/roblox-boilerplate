@@ -28,7 +28,7 @@ jobs:
         run: wally-package-types --sourcemap sourcemap.json Packages/
 
       - name: Lint with luau-lsp
-        run: luau-lsp analyze --defs=globalTypes.d.lua --sourcemap=sourcemap.json --no-strict-dm-types --flag:LuauTinyControlFlowAnalysis=True src
+        run: luau-lsp analyze --defs=globalTypes.d.lua --sourcemap=sourcemap.json --no-strict-dm-types  --ignore=Packages/** --flag:LuauTinyControlFlowAnalysis=True src
 
       - name: Send mail
         if: ${{ failure() }}
