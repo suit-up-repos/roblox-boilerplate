@@ -59,7 +59,7 @@ jobs:
         uses: ok-nick/setup-aftman@v0.4.2
 
       - name : get latest roblox library
-        run: selene generate-roblox-std
+        run: cargo install selene
         
       - name : Lint with selene
         run: selene src
