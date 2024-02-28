@@ -1,5 +1,8 @@
 name: CI-Code-Validation
-on: [push]
+on:
+  push:
+  pull_request:
+    types: [opened, edited, reopened, synchronize, ready_for_review]
 
 jobs:
   luau-lsp:
@@ -13,10 +16,6 @@ jobs:
 
       - name: Install dependencies
         uses: ok-nick/setup-aftman@v0.4.2
-
-      # - name: Create folder
-      #   run: |
-      #     mkdir Packages -p
 
       - name: Download type files
         run: curl -L "https://raw.githubusercontent.com/JohnnyMorganz/luau-lsp/main/scripts/globalTypes.d.lua" > globalTypes.d.lua
@@ -32,6 +31,13 @@ jobs:
 
       - name: Lint with luau-lsp
         run: luau-lsp analyze --defs=globalTypes.d.lua --sourcemap=sourcemap.json --no-strict-dm-types  --ignore=Packages/** --flag:LuauTinyControlFlowAnalysis=True src
+
+      - name: request changes
+        if: ${{ github.event.pull_request && failure() }}
+        uses: ntsd/auto-request-changes-action@v3
+        with:
+          github-token: "${{ secrets.GITHUB_TOKEN }}"
+          review-message: "Fix Selene errors"
 
       - name: Send mail
         if: ${{ failure() }}
@@ -67,12 +73,12 @@ jobs:
       - name : Lint with selene
         run: selene src
 
-      #- name: Check for StyLua formatting
-      #  uses: JohnnyMorganz/stylua-action@v3
-      #  with:
-      #    token: ${{ secrets.GITHUB_TOKEN }}
-      #    version: latest
-      #    args: --check src
+      - name: request changes
+        if: ${{ github.event.pull_request && failure() }}
+        uses: ntsd/auto-request-changes-action@v3
+        with:
+          github-token: "${{ secrets.GITHUB_TOKEN }}"
+          review-message: "Fix Luau-lsp errors"
 
       - name: Send mail
         if: ${{ failure() }}
