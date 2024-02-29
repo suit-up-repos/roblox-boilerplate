@@ -37,7 +37,7 @@ jobs:
         uses: ntsd/auto-request-changes-action@v3
         with:
           github-token: "${{ secrets.GITHUB_TOKEN }}"
-          review-message: "Fix Selene errors"
+          review-message: "Fix Luau-lsp errors"
 
       - name: Send mail
         if: ${{ failure() }}
@@ -78,7 +78,7 @@ jobs:
         uses: ntsd/auto-request-changes-action@v3
         with:
           github-token: "${{ secrets.GITHUB_TOKEN }}"
-          review-message: "Fix Luau-lsp errors"
+          review-message: "Fix Selene errors"
 
       - name: Send mail
         if: ${{ failure() }}
